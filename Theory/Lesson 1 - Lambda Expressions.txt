@@ -1,0 +1,257 @@
+
+
+### Lambda Expressions :
+
+
+- Simple Definition : Lambda Functions are just another simpler way of WRITING the INSTANCES of ANONYMOUS classes.
+
+- Main purpose of LAMBDA EXPRESSIONS are : to make Anonymous Functions more READABLE.
+
+- Makes it easier to WRITE and UNDERSTAND the Anonymous Functions.
+
+
+______________________________________________________________________________________________________________________________________________________________________
+
+
+
+### Simple rules of writing Lambda Functions :
+
+Step 1 :- Take the input parameters and put them in () followed by -> operator, if no params given then use () only. 
+
+	Examples : 
+
+	a) With one parameter : MyLabdaEx lambdaEx = (String s1) -> ....
+
+	b) With multiple params : MyLabdaEx lambdaEx = (String s1, String s2) -> ....
+	
+	c) With no params : MyLabdaEx lambdaEx = () -> ....
+
+
+Step 2 :- After writing -> operator write the implementation code : 
+
+	a) if only one line of implementation is there, just write it directly. 
+	
+	Example : MyLabdaEx lambdaEx = (String s1) -> System.out.println(s1);
+
+	b) if implementation is having more than one line, then write it inside a parenthesis :
+
+	Example : MyLabdaEx lambdaEx = (Integer numbers) -> {
+							for(int i = 0; i<numbers; i++)	{
+								System.out.println(i);
+							  }						
+							};
+
+
+
+*Imp Point : We do not need to write the type of variable in lambda functions, the compiler will automatically guess it, this was not possibile until java-7.
+
+
+______________________________________________________________________________________________________________________________________________________________________
+
+
+### 3 Important Questions about Lambda Expressions :
+
+
+Question 1 : What is the TYPE of a Lambda Expression?
+
+Answer 1 : The TYPE of a Lambda Expression is a FUNCTIONAL INTERFACE. 
+
+
+### Functional Interface : It is an interface with only one ABSTRACT Method.
+
+Examples : Runnable, Comparator, FileFilter, etc.
+
+*Imp point : Interfaces IMPLICITLY declare some OBJECT class methods inside them, they don't inherit them, 
+ and these methods doesn't count when calling an interface FUNCTIONAL.
+
+-- @FunctionalInterface annotation can be used to declare an interface functional, but it is not required,
+  if u declare it, then compiler will check whether this interface is functional or not and if not then it will throw compilation error.
+
+
+
+Question 2 : Can a Lambda be put in a Variable?
+
+Answer 2 : YES, it can be put in a variable.
+
+-- A lambda can be taken as a method parameter, and can also be returned by a method. 
+
+
+
+Question 3 : Is a Lambda Expression an Object?
+
+Answer 3 : Complex answer, but No, because new keyword is not used in creating a lambda, hence it has better performance than the anonymous classes.
+
+-- A lambda is an Object, WITHOUT its own IDENTITY, so it should not be used as an Object, instead it should be used as a piece of code.
+
+
+
+______________________________________________________________________________________________________________________________________________________________________
+
+
+# FUNCTIONAL INTERFACES :
+
+-- Java 8 has provided a new package for functional interfaces : java.util.function, with a rich set of functional interfaces.
+
+-- These functional interfaces can be divided into 4 categories : 
+
+
+
+1 : SUPPLIER : It does not take any Object as input and PROVIDES an Object in return.
+
+Example : public interface Supplier<T> {
+	T get();
+}
+
+
+
+2: CONSUMER : It takes an Object, but does not return anything, like System.out.println().
+
+Example : public interface Consumer<T> {
+	void accept(T t);
+}
+
+ALSO, there is BI-CONSUMER : It takes 2 Objects, can be of different type and returns nothing.
+
+Example : public interface BiConsumer<T, V> {
+	void accept(T t, V v);
+}
+
+
+
+3: PREDICATE : It takes an Object as a parameter and returns a BOOLEAN.
+
+Example : public interface Predicate<T> {
+	boolean test(T t);
+}
+
+ALSO, there is BI-PREDICATE : It takes 2 objects as parameters and returns a BOOLEAN.
+
+Example : public interface BiPredicate<T, V> {
+	boolean test(T t, V v);
+} 
+
+
+
+4: FUNCTION : It takes an OBJECT as a parameter and returns another OBJECT.
+
+Example : public interface Function<T, R> {
+	R apply(T t); 
+}
+
+ALSO, there is BI-FUNCTION, It takes 2 Objects as parameters and returns another Object.
+
+Example : public interface Function<T, V, R> {
+	R apply(T t, V v); 
+}
+
+
+** There are some special categories as well in function, which are :
+
+a) Unary operator : takes an object and returns an object of same type.
+
+B) Binary operator : takes 2 objects of same kind and returns another object of same kind.
+ 
+
+______________________________________________________________________________________________________________________________________________________________________
+
+
+
+### Method Reference : It is just another way of writing the lambda expressions.
+
+-- It uses the :: to write the lambda expression, introduced in java-8.
+
+
+Example-1 :  a lamda expression : Consumer<String> c = s -> System.out.println(s);
+
+	   -- can be written as : Consumer<String> c = System.out::println; 
+
+
+Example-2 :  a lamda expression : Comparator<String> c = (i1, i2) -> Integer.compare(i1, i2);
+
+	   -- can be written as : Comparator<String> c = Integer::compare; 
+
+
+______________________________________________________________________________________________________________________________________________________________________
+
+
+### How to use these new features to process data efficiently in java :
+
+Question : Where are our Objects in JAVA?
+
+Answer : Most of the time they are in some sort of Collection, (maybe a List, Set or a Map).
+
+Question : Can we process this data with the LAMBDAs?
+
+Answer: Yes, and it will make the process more efficient.
+
+Example : Printing a list of customers using lambda expression :
+
+ 		List<Customer> list = ...;
+		list.forEach(System.out::println);
+
+
+______________________________________________________________________________________________________________________________________________________________________
+
+
+### DEFAULT METHODS : 
+
+-- Before java-8, if we write a method inside an interface, then we have to provide its implementation to every class that implements it,
+
+-- But now, with java-8 we have Default Methods, similar to a normal method with a keyword "default" before it.
+
+-- We can define these methods in the interface and we don't need to implement these in the classes that implement this interface.
+
+-- Java interface default methods are also referred to as Defender Methods or Virtual extension methods.
+
+Example : 
+
+public interface Iterable<E> {
+
+// the usual methods
+
+default void forEach(Consumer<E> consumer) {
+
+	for(E e : this) {
+	  consumer.accept(e);
+	}
+   }
+
+}
+
+
+-- This allows to change the OLD java Interfaces without BREAKING the existing Implementations.
+
+* Imp Point: If a class implements 2 Interfaces with same default method having same signature, then the implementing class would have to
+  provide the implementation of the default method, otherwise the compiler will give error.
+
+
+______________________________________________________________________________________________________________________________________________________________________
+
+
+
+## STATIC METHODS : 
+
+-- Java interface static method is similar to default method except that we can’t override them in the implementation classes.
+
+-- Java interface static method is visible to interface methods only.
+
+Example : 
+
+public interface MyData {
+
+static boolean isNull() {
+System.out.println("Null Check !!!");
+
+   }
+}
+
+
+-- Like any other static methods, we can use interface static methods using class name, eg : boolean result = MyData.isNull("abc");
+
+-- Java interface static methods are good for providing utility methods, for example null check, collection sorting etc.
+
+-- Java interface static method helps us in providing security by not allowing implementation classes to override them.
+
+
+
+______________________________________________________________________________________________________________________________________________________________________
